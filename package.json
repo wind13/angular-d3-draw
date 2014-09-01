@@ -1,0 +1,31 @@
+{
+  "name": "angular-d3-draw",
+  "version": "0.0.1",
+  "description": "Draw component with d3, the angular way.",
+  "main": "test_server.js",
+  "scripts": {
+    "test": "node_modules/karma/bin/karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wind13/angular-d3-draw.git"
+  },
+  "author": "Simon Liu <wind13@163.com> (http://www.playscala.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wind13/angular-d3-draw/issues"
+  },
+  "homepage": "https://github.com/wind13/angular-d3-draw/issues",
+  "dependencies": {
+    "express": "^4.3.0",
+    "karma": "^0.12.16"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-karma": "^0.8.3",
+    "karma": "^0.12.23",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "angular-d3-draw",
+  "version": "0.0.1",
+  "authors": [
+    "Simon Liu <wind13@163.com>"
+  ],
+  "description": "Use AngularJS and D3 to implement component like Draw of LibreOffice.",
+  "main": "ngd3draw.min.js",
+  "keywords": [
+    "d3",
+    "ng",
+    "angular",
+    "draw"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.github.com/wind13/angular-d3-draw",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "ngD3": "*"
+  }
+}
