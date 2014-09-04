@@ -1,19 +1,31 @@
 <!doctype html>
 <html>
+
 <head>
-  <title>Tester</title>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/ngD3/ngD3.min.js"></script>
-  <script src="src/angular-d3-draw.js"></script>
+    <title>Tester</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="src/angular-d3-draw.js"></script>
 </head>
+
 <body ng-app="examples" ng-controller="main">
-  <div ng-show="d3">Current version number: {{ d3.version }}</div>
-  <div ng-hide="d3">Failing test :(</div>
-  <script>
-    angular.module('examples',['ngD3'])
-      .controller('main', ['$scope', '$d3', function ($scope, $d3) {
-        if ($d3) $scope.d3 = $d3;
-      }]);
-  </script>
+    <div ng-show="d3">Current d3 version number: {{ d3.version }}</div>
+    <div ng-hide="d3">Failing test :(</div>
+    <div style="width: 600px; height: 500px">
+        <svg id="drawSvg" width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <svg-adaptor svgid="drawSvg" ng-transclude>
+        <rect-text x="50" y="50" width="300" height="200" style="fill:red;"></rect-text>
+    </svg-adaptor>
+    <script>
+        angular.module('examples', ['angular-d3-draw'])
+            .controller('main', ['$scope', 
+                function($scope)
+                {
+                    if (d3) $scope.d3 = d3;
+                }
+            ]);
+    </script>
 </body>
+
 </html>

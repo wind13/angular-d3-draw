@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'bower_components/angular/angular.js',
-      'bower_components/ngD3/ngD3.min.js',
+      'bower_components/d3/d3.min.js',
       'src/angular-d3-draw.js',
       'test/tests.js'
     ],
