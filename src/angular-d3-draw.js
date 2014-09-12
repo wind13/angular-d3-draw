@@ -41,15 +41,6 @@
                     $scope.MIN_FONT_SIZE = 12;
                     $scope.MAX_FONT_SIZE = 48;
                     $scope.PADDING = 10;
-                    $scope.lines = function() {
-                        console.log("width:" + $scope.width + ";");
-                        console.log("fontsize:" + $scope.fontsize() + ";");
-                        var zs = $scope.width / $scope.fontsize() * 2;
-                        console.log("zs:" + zs + ";");
-                        var ls = Math.floor($scope.textcount / zs);
-                        console.log("ls:" + ls + ";");
-                        return ls;
-                    };
                     $scope.calculateLineHeight = function(element) {
                         var lineHeight = parseInt($(element).css('line-height'), 10);
                         var clone;
@@ -69,20 +60,6 @@
 
                         return lineHeight;
                     }
-                    $scope.fontsize = function() {
-                        $scope.textcount = $scope.text.length; //TODO check Chinese char to 2*l;
-                        console.log("textcount:" + $scope.textcount + ";");
-                        console.log("mj:" + $scope.width * $scope.height + ";");
-                        var zmj = Math.sqrt($scope.width * $scope.height / $scope.textcount);
-                        console.log("zmj:" + zmj + ";");
-                        var fz = Math.round(zmj);
-                        console.log("fz:" + fz + ";");
-                        console.log("fz:" + fz + ";");
-                        return Math.min(fz, $scope.MIN_FONT_SIZE);
-                    };
-                    $scope.lineheight = function() {
-                        return Math.floor(($scope.height - $scope.PADDING) / $scope.lines());
-                    };
                 },
                 link: function(scope, element, attr, svgCtrl) {
                     console.debug("attr.id:" + attr.id + ";");
@@ -100,9 +77,6 @@
                     fob.attr("width", attr.width);
                     fob.attr("height", attr.height);
                     var style = fob.append("xhtml:style");
-                    //  height: inherit; overflow: hidden;
-                    // font-size: " + scope.fontsize() + "px;
-                    // line-height: " + scope.lineheight() + "px; 
                     style.text(".rectText { text-align: center; padding: " + scope.PADDING + "px; box-sizing: border-box;}" +
                         " .rectStyle { fill: #f60; stroke: black; stroke-width: 5; opacity: 0.3 }");
                     var div = fob.append("xhtml:div");
@@ -140,28 +114,6 @@
                             }
 
                             // Adjust fz and lh to fit the rect.
-                            while (hdiv > hrct) {
-                                if (lhn <= fzn * 1.5 && fzn >= scope.MIN_FONT_SIZE + 2) {
-                                    fzn = fzn - 1;
-                                    divtext.style({
-                                        "font-size": fzn + "px"
-                                    });
-                                } else {
-                                    if (lhn <= scope.MIN_FONT_SIZE) {
-                                        divtext.style({
-                                            "overflow": "hidden",
-                                            "height": hrct + "px"
-                                        });
-                                        return;
-                                    } else {
-                                        lhn = lhn - 1;
-                                        divtext.style({
-                                            "line-height": lhn + "px"
-                                        });
-                                    }
-                                }
-                                hdiv = $(div[0]).height() + scope.PADDING * 2;
-                            }
                             while (hdiv < hrct) {
                                 if (fzn >= scope.MAX_FONT_SIZE || lhn < fzn * 1.5) {
                                     lhn = lhn + 1;
@@ -176,12 +128,37 @@
                                 }
                                 hdiv = $(div[0]).height() + scope.PADDING * 2;
                             }
+                            while (hdiv > hrct) {
+                                if (lhn <= fzn * 1.5 && fzn > scope.MIN_FONT_SIZE) {
+                                    fzn = fzn - 1;
+                                    divtext.style({
+                                        "font-size": fzn + "px"
+                                    });
+                                } else {
+                                    if (lhn <= scope.MIN_FONT_SIZE) {
+                                        divtext.style({
+                                            "overflow": "hidden",
+                                            "height": hrct + "px"
+                                        });
+                                    } else {
+                                        lhn = lhn - 1;
+                                        divtext.style({
+                                            "line-height": lhn + "px"
+                                        });
+                                    }
+                                }
+                                hdiv = $(div[0]).height() + scope.PADDING * 2;
+                            }
+                            if (hdiv != hrct) {
+                                lhn = Math.max(scope.MIN_FONT_SIZE, hrct / (hdiv / lhn));
+                                divtext.style({
+                                    "overflow": "hidden",
+                                    "line-height": lhn + "px",
+                                    "height": hrct + "px"
+                                });
+                            }
                         }
                         divtext.attr("title", newValue);
-                        /* .style({
-                            "font-size": scope.fontsize()+"px",
-                            "line-height": scope.lineheight() +"px"
-                        }); */
                     });
                 }
             };

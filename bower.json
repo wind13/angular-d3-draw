@@ -25,7 +25,6 @@
     "angular": "~1.2.16",
     "d3": "~3.4.11",
     "angular-mocks": "~1.2.23",
-    "ngFitText": "~2.4.0",
-    "FitText.js": "*"
+    "jquery": "~2.1.1"
   }
 }
