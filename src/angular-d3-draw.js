@@ -93,8 +93,18 @@
                             "height": "auto"
                         });
                         divtext.text(newValue);
-                        var hdiv = $(div[0]).height() + scope.PADDING * 2;
                         var hrct = parseInt(rct.attr("height"));
+                        // if is empty string, then set the height to avoid infinite loop.
+                        if (newValue === "") {
+                            divtext.style({
+                                "font-size": hrct/2 + "px",
+                                "line-height": hrct + "px",
+                                "overflow": "hidden",
+                                "height": hrct +"px"
+                            });
+                            return;
+                        }
+                        var hdiv = $(div[0]).height() + scope.PADDING * 2;
                         var lh = scope.calculateLineHeight(div[0][0]);
                         var fz = parseInt($(div[0]).css("font-size"));
                         var fzn, lhn;
