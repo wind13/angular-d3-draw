@@ -9,14 +9,29 @@
                     'svgid': '@'
                 },
                 controller: function($scope) {
-                    $scope.svg = d3.select("#" + $scope.svgid);
-                    this.draw = function(id, x, y) {
+                    this.svg = $scope.svg = d3.select("#" + $scope.svgid);
+                    this.group = function(id, x, y) {
                         var g = $scope.svg.append("g");
                         g.attr("id", id).attr("transform", "translate(" + x + "," + y + ")");
                         return g;
                     };
+                    this.markerArrow = function(id, fill) {
+                        var marker = $scope.svg.append('marker');
+                        marker.attr("id", id);
+                        marker.attr("viewBox", "0 0 10 10");
+                        marker.attr("refX", "0");
+                        marker.attr("refY", "5");
+                        marker.attr("fill", fill);
+                        marker.attr("markerUnits", "strokeWidth");
+                        marker.attr("markerWidth", "8");
+                        marker.attr("markerHeight", "6");
+                        marker.attr("orient", "auto");
+                        var triangle = marker.append('path');
+                        triangle.attr("d", "M 0 0 L 10 5 L 0 10 z");
+                    };
                 },
-                link: function(scope, element, attr) {}
+                link: function(scope, element, attr) {
+                }
             };
         })
         .directive('rectText', function() {
@@ -62,9 +77,7 @@
                     }
                 },
                 link: function(scope, element, attr, svgCtrl) {
-                    console.debug("attr.id:" + attr.id + ";");
-                    console.debug("scope.id:" + scope.id + ";");
-                    var g = svgCtrl.draw(scope.id, scope.x, scope.y);
+                    var g = svgCtrl.group(scope.id, scope.x, scope.y);
                     var rct = g.append("rect");
                     rct.attr("id", g.attr("id") + "rect");
                     rct.attr("rx", attr.rx);
@@ -85,7 +98,6 @@
                     div.attr("title", attr.text);
                     div.attr("data-fittext", "");
                     div.text(attr.text);
-                    console.log($(div[0]).height());
                     scope.$watch('text', function(newValue, oldValue) {
                         var divtext = d3.select("#" + scope.id + "text");
                         divtext.style({
@@ -97,10 +109,10 @@
                         // if is empty string, then set the height to avoid infinite loop.
                         if (newValue === "") {
                             divtext.style({
-                                "font-size": hrct/2 + "px",
+                                "font-size": hrct / 2 + "px",
                                 "line-height": hrct + "px",
                                 "overflow": "hidden",
-                                "height": hrct +"px"
+                                "height": hrct + "px"
                             });
                             return;
                         }
@@ -176,7 +188,7 @@
         .directive('rightRoundedRect', function() {
             return {
                 restrict: 'E',
-                transclude: true,
+                transclude: false,
                 require: '^svgAdaptor',
                 scope: {
                     id: '@',
@@ -198,12 +210,77 @@
                     };
                 },
                 link: function(scope, element, attr, svgCtrl) {
-                    var g = svgCtrl.draw(attr.id, attr.x, attr.y);
+                    var g = svgCtrl.group(attr.id, attr.x, attr.y);
                     var rrr = g.append("path");
                     rrr.attr("style", attr.style);
                     rrr.attr("class", attr.class);
                     rrr.attr("d", scope.rightRoundedRect(0, 0, attr.width, attr.height, attr.radius));
                 }
+            };
+        })
+        .directive('linkArrow', function() {
+            return {
+                restrict: 'E',
+                transclude: false,
+                require: '^svgAdaptor',
+                scope: {
+                    id: '=',
+                    x1: '@',
+                    y1: '@',
+                    x2: '@',
+                    y2: '@',
+                    stroke: '@',
+                    strokeWidth: '@',
+                    title: '=?',
+                    class: '@'
+                },
+                controller: function($scope) {},
+                link: function(scope, element, attr, svgCtrl) {
+                    var markerId = attr.id + "Arrow";
+                    var ma = svgCtrl.markerArrow(markerId, attr.stroke);
+                    var rrr = svgCtrl.svg.append("line");
+                    rrr.attr("id", attr.id);
+                    rrr.attr("class", attr.class);
+                    rrr.attr("marker-end", "url(#" + markerId +")");
+                    rrr.attr("x1", attr.x1);
+                    rrr.attr("y1", attr.y1);
+                    rrr.attr("x2", attr.x2);
+                    rrr.attr("y2", attr.y2);
+                    rrr.attr("stroke", attr.stroke);
+                    rrr.attr("stroke-width", attr.strokeWidth);
+                    rrr.attr("title", attr.title);
+                }
+            }
+        })
+        /** 
+         * Test browser dynamically render svg element.
+         */
+        .directive('svgHere', function() {
+            return {
+                restrict: 'EA',
+                transclude: true,
+                replace: true,
+                scope: {
+                    'id': '@',
+                    'width': '@',
+                    'height': '@'
+                },
+                controller: function($scope) {
+                    $scope.svg = d3.select("#" + $scope.id);
+                    $scope.svg.append("circle").attr("cx", "50").attr("cy", "40").attr("r", "20");
+                },
+                template: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>',
+                link: function(scope, element, attr) {
+                    scope.svg = d3.select("#" + scope.id);
+                    scope.svg.append("circle").attr("cx", "50").attr("cy", "40").attr("r", "20");
+                }
+            };
+        })
+        .directive('circleTest', function() {
+            return {
+                restrict: 'E',
+                replace: true,
+                template: '<rect x="5" y="5" width="20" height="20" class="ng-scope"></rect>'
             };
         })
 })();
