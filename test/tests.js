@@ -45,7 +45,7 @@ describe('angular-d3-draw test suits', function() {
         console.debug(jqdiv.html().indexOf("path"));
         expect(jqdiv.html().indexOf("path")).toBeGreaterThan(10);
 
-        var gd3 = d3.select("#testsvg g path");
+        var gd3 = d3.select("#testsvg path");
         console.debug(gd3.attr("class"));
         expect(gd3.attr("class")).toEqual("rrr");
 

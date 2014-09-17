@@ -11,7 +11,8 @@ angular.module('examples', ['angular-d3-draw'])
                 "y2": "40"
             };
             $scope.pointArrow = function() {
-                $scope.ladata.y2 = 90;
+                $scope.ladata.x1 = 90;
+                $scope.ladata.y2 = 290;
             };
         }
     ]);

@@ -10,14 +10,58 @@
                 },
                 controller: function($scope) {
                     this.svg = $scope.svg = d3.select("#" + $scope.svgid);
+                    this.gid = function(id) {
+                        return $scope.svgid + "-" + id;
+                    };
+                    this.find = function(id) {
+                        return d3.select("#" + this.gid(id));
+                    };
                     this.group = function(id, x, y) {
                         var g = $scope.svg.append("g");
                         g.attr("id", id).attr("transform", "translate(" + x + "," + y + ")");
                         return g;
                     };
+
+                    /**
+                     * Used for sub element watch attrs change.
+                     *
+                     * @svgCtrl just means this controller
+                     * @scope the sub element scope
+                     * @attr the sub element attr
+                     * @fnSet the function to handle the attr changes.
+                     *
+                     */
+                    this.watchAttrs = function(svgCtrl, scope, attr, fnSet) {
+                        var svgCtrl = this;
+                        angular.forEach(attr, function(value, key) {
+                            if (key.indexOf("$") < 0) {
+                                scope.$watch(key, function(newValue, oldValue) {
+                                    fnSet(svgCtrl, scope, key, newValue, oldValue);
+                                });
+                            }
+                        });
+                    };
+
+                    /**
+                     * Used for sub element set attrs. Can be used for watchAttrs default fnSet.
+                     *
+                     * @svgCtrl just means this controller.
+                     * @scope the sub element scope
+                     * @key the attr key
+                     * @newValue the new value want to set to attr.
+                     * @oldValue the old value of the attr.
+                     */
+                    this.setAttrs = function(svgCtrl, scope, key, newValue, oldValue) {
+                        var v = newValue;
+                        if (key === "id") {
+                            v = svgCtrl.gid(newValue);
+                        }
+                        svgCtrl.find(scope.id).attr(key, v);
+                    }
+
                     this.markerArrow = function(id, fill) {
                         var marker = $scope.svg.append('marker');
-                        marker.attr("id", id);
+                        marker.attr("id", this.gid(id));
                         marker.attr("viewBox", "0 0 10 10");
                         marker.attr("refX", "0");
                         marker.attr("refY", "5");
@@ -28,10 +72,10 @@
                         marker.attr("orient", "auto");
                         var triangle = marker.append('path');
                         triangle.attr("d", "M 0 0 L 10 5 L 0 10 z");
+                        return marker;
                     };
                 },
-                link: function(scope, element, attr) {
-                }
+                link: function(scope, element, attr) {}
             };
         })
         .directive('rectText', function() {
@@ -210,11 +254,11 @@
                     };
                 },
                 link: function(scope, element, attr, svgCtrl) {
-                    var g = svgCtrl.group(attr.id, attr.x, attr.y);
-                    var rrr = g.append("path");
+                    // var g = svgCtrl.group(attr.id, attr.x, attr.y);
+                    var rrr = svgCtrl.svg.append("path");
                     rrr.attr("style", attr.style);
                     rrr.attr("class", attr.class);
-                    rrr.attr("d", scope.rightRoundedRect(0, 0, attr.width, attr.height, attr.radius));
+                    rrr.attr("d", scope.rightRoundedRect(attr.x, attr.y, attr.width, attr.height, attr.radius));
                 }
             };
         })
@@ -224,31 +268,23 @@
                 transclude: false,
                 require: '^svgAdaptor',
                 scope: {
-                    id: '=',
+                    id: '@',
                     x1: '@',
                     y1: '@',
                     x2: '@',
                     y2: '@',
                     stroke: '@',
                     strokeWidth: '@',
-                    title: '=?',
+                    title: '@',
                     class: '@'
                 },
                 controller: function($scope) {},
                 link: function(scope, element, attr, svgCtrl) {
-                    var markerId = attr.id + "Arrow";
-                    var ma = svgCtrl.markerArrow(markerId, attr.stroke);
+                    var ma = svgCtrl.markerArrow(attr.id + "-arrow", attr.stroke);
                     var rrr = svgCtrl.svg.append("line");
-                    rrr.attr("id", attr.id);
-                    rrr.attr("class", attr.class);
-                    rrr.attr("marker-end", "url(#" + markerId +")");
-                    rrr.attr("x1", attr.x1);
-                    rrr.attr("y1", attr.y1);
-                    rrr.attr("x2", attr.x2);
-                    rrr.attr("y2", attr.y2);
-                    rrr.attr("stroke", attr.stroke);
-                    rrr.attr("stroke-width", attr.strokeWidth);
-                    rrr.attr("title", attr.title);
+                    rrr.attr("id", svgCtrl.gid(attr.id));
+                    rrr.attr("marker-end", "url(#" + ma.attr("id") + ")");
+                    svgCtrl.watchAttrs(svgCtrl, scope, attr, svgCtrl.setAttrs);
                 }
             }
         })
