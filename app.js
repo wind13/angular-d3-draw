@@ -14,5 +14,19 @@ angular.module('examples', ['angular-d3-draw'])
                 $scope.ladata.x1 = 90;
                 $scope.ladata.y2 = 290;
             };
+
+            //TODO check radius less than half of height.
+            $scope.rrr01 = {
+                "x": "50",
+                "y": "30",
+                "width": "260",
+                "height": "40",
+                "radius": "20"
+            };
+            $scope.changeRRR01 = function() {
+                $scope.rrr01.x = 90;
+                $scope.rrr01.y = 290;
+            };
+
         }
     ]);

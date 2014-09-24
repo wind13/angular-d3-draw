@@ -68,8 +68,8 @@
     <svg-adaptor svgid="drawSvg" ng-transclude>
         <rect-text id="svgtext" x="50" y="50" rx="20" ry="50" width="200" height="150"
         style="fill:#fc0;" text-class="test" rect-class="great" text="{{d3text}}"></rect-text>
-        <right-rounded-rect x="50" y="260" width="300" height="200" radius="100" class="rrr"></right-rounded-rect>
-        <right-rounded-rect x="0" y="60" width="30" height="20" radius="10" class="ttt"></right-rounded-rect>
+        <right-rounded-rect id="rrr01" x="{{rrr01.x}}" y="{{rrr01.y}}" width="{{rrr01.width}}" height="{{rrr01.height}}" radius="{{rrr01.radius}}" class="rrr"></right-rounded-rect>
+        <right-rounded-rect id="rrr02" x="0" y="60" width="30" height="20" radius="10" class="ttt"></right-rounded-rect>
         <link-arrow id='la01' x1='{{ladata.x1}}' y1='{{ladata.y1}}' x2='{{ladata.x2}}' y2='{{ladata.y2}}'
         stroke-width='2' stroke='#069' class="linkarrow"></link-arrow>
         <link-arrow id='la02' x1='50' y1='300' x2='20' y2='50'
@@ -78,6 +78,7 @@
     <div>
         <input type="text" ng-model="d3text" size="50" />
         <button ng-click="pointArrow()">Point arrow</button>
+        <button ng-click="changeRRR01()">Change rrr01</button>
     </div>
     <div>These example below shows that the chrome or what ever browser can not render
         svg element dynamically.</div>

@@ -252,13 +252,30 @@
                             "," + radius + " 0 0 1 " + -radius + "," + radius +
                             "h" + (radius - width) + "z";
                     };
+                    $scope.setAttrs = function(svgCtrl, scope, key, newValue, oldValue) {
+                        var path = svgCtrl.find(scope.id);
+                        switch (key) {
+                            case "id":
+                                path.attr(key, svgCtrl.gid(newValue));
+                                break;
+                            case "style":
+                            case "class":
+                                path.attr(key, newValue);
+                                break;
+                            default:
+                                path.attr("d", $scope.rightRoundedRect(scope.x, scope.y, scope.width, scope.height, scope.radius));
+                        }
+                    };
+
                 },
                 link: function(scope, element, attr, svgCtrl) {
                     // var g = svgCtrl.group(attr.id, attr.x, attr.y);
                     var rrr = svgCtrl.svg.append("path");
-                    rrr.attr("style", attr.style);
-                    rrr.attr("class", attr.class);
-                    rrr.attr("d", scope.rightRoundedRect(attr.x, attr.y, attr.width, attr.height, attr.radius));
+                    rrr.attr("id", svgCtrl.gid(attr.id));
+                    // rrr.attr("style", attr.style);
+                    // rrr.attr("class", attr.class);
+                    // rrr.attr("d", scope.rightRoundedRect(attr.x, attr.y, attr.width, attr.height, attr.radius));
+                    svgCtrl.watchAttrs(svgCtrl, scope, attr, scope.setAttrs);
                 }
             };
         })
