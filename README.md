@@ -19,7 +19,7 @@ Install it via bower(not done yet):
 Add dependencies to the `<head>` section of your index html:
 ```html
 <meta charset="utf-8">  <!-- it's important for d3.js -->
-<link rel="stylesheet" href="bower_components/angular-d3-draw/build/angular-d3-draw.min.css">
+<link rel="stylesheet" href="bower_components/angular-d3-draw/build/css/angular-d3-draw.css">
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/d3/d3.js"></script>
