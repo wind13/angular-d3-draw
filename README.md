@@ -19,11 +19,11 @@ Install it via bower(not done yet):
 Add dependencies to the `<head>` section of your index html:
 ```html
 <meta charset="utf-8">  <!-- it's important for d3.js -->
+<link rel="stylesheet" href="bower_components/angular-d3-draw/build/angular-d3-draw.min.css">
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/angular-d3-draw/src/angular-d3-draw.js"></script>
-<link rel="stylesheet" href="bower_components/nvd3/ng.d3.draw.css">
+<script src="bower_components/angular-d3-draw/build/angular-d3-draw.min.js"></script>
 ```
 
 Then in angular page you can use it like:
@@ -44,4 +44,17 @@ Note: the *svg id* should same as *svgid* attribute.
 
 #### Rect text
 
+A rect with text inside.
+
 #### Right rounded rect
+
+A right rounded rect.
+
+## Examples
+
+* [TOC Cloud Diagram](http://www.playscala.com/example/jsui/toc-tools/#/cloud)
+
+## Inspiration & Ideas
+
+* [angular-nvd3](https://github.com/krispo/angular-nvd3)
+* [angular-d3-directives](https://github.com/kontera-technologies/angular-d3-directives)
