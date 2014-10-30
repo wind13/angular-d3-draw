@@ -27,6 +27,16 @@ angular.module('examples', ['angular-d3-draw'])
                 $scope.rrr01.x = 90;
                 $scope.rrr01.y = 290;
             };
+            $scope.testNum = 1;
+            $scope.addZeros = function(lgth){
+                // return (lgth === 0)? "":($scope.addZeros(lgth-1) + "0");
+                var z="";
+                for (var i = 0; i < lgth; i++) {
+                    z = z + "0";
+                }
+                return z;
+            };
+ 
 
         }
     ]);
