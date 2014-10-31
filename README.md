@@ -52,7 +52,11 @@ A right rounded rect.
 
 ## Examples
 
-* [TOC Cloud Diagram](http://www.playscala.com/example/jsui/toc-tools/#/cloud)
+* Git clone this project.
+* Run npm install.
+* Run bower install.
+* Run node server.js.
+* See index.html in browser.
 
 ## Inspiration & Ideas
 
